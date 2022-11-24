@@ -18,5 +18,5 @@
 #include "trimesh2/TriMesh.h"
 #include <memory>
 
-
+typedef std::shared_ptr<trimesh::TriMesh> TriMeshPtr;
 #endif // CRCOMMON_INTERFACE
