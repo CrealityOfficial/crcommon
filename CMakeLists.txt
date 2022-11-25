@@ -4,6 +4,7 @@ set(LIBS)
 set(ILIBS trimesh2 polyclipping)
 
 set(SRCS crcommon/interface.h
+		 crcommon/header.h
 		 crcommon/Settings.h
 		 crcommon/Settings.cpp
 		 )
