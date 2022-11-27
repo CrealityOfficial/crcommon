@@ -9,6 +9,6 @@
 typedef std::shared_ptr<trimesh::TriMesh> TriMeshPtr;
 
 #include "crcommon/Settings.h"
-typedef std::shared_ptr<crcommon::Settings> SettingPtr;
+typedef std::shared_ptr<crcommon::Settings> SettingsPtr;
 
 #endif // CRCOMMON_HEADER_INTERFACE
