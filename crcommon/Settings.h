@@ -95,11 +95,6 @@ private:
     Settings* parent;
 
     /*!
-     * \brief A dictionary to map the setting keys to the actual setting values.
-     */
-    std::unordered_map<std::string, std::string> settings;
-
-    /*!
      * \brief Get the value of a setting, but without looking at the limiting to
      * extruder.
      *
@@ -109,6 +104,12 @@ private:
      * \return The setting's value.
      */
     std::string getWithoutLimiting(const std::string& key) const;
+public:
+    /*!
+     * \brief A dictionary to map the setting keys to the actual setting values.
+     */
+    std::unordered_map<std::string, std::string> settings;
+
 };
 
 } //namespace cura
