@@ -14,6 +14,18 @@
 
 namespace crcommon
 {
+	void _add_item(const std::string& key, const std::string value, KValues& KVs)
+	{
+		if (KVs.find(key) != KVs.end()) // Already exists.
+		{
+			KVs[key] = value;
+		}
+		else // New setting.
+		{
+			KVs.emplace(key, value);
+		}
+	}
+
 	std::unordered_set<std::string> defaultSearchDirectories()
 	{
 		return std::unordered_set<std::string>();
