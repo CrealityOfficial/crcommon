@@ -1,12 +1,15 @@
 __cc_find(polyclipping)
+__cc_find(rapidjson)
 
-set(LIBS)
+set(LIBS rapidjson)
 set(ILIBS trimesh2 polyclipping)
 
 set(SRCS crcommon/interface.h
 		 crcommon/header.h
 		 crcommon/Settings.h
 		 crcommon/Settings.cpp
+		 crcommon/jsonloader.h
+		 crcommon/jsonloader.cpp
 		 )
 		 
 set(INCS)
