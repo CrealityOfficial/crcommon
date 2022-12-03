@@ -2,6 +2,7 @@
 #define CRCOMMON_JSONLOADER_1669972280254_H
 #include "crcommon/interface.h"
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 namespace crcommon
@@ -17,6 +18,7 @@ namespace crcommon
  */
     CRCOMMON_API int loadJSON(const std::string& jsonFileName, KValues& KVs, std::vector<KValues>& extruderKVs);
 
+    CRCOMMON_API std::unordered_set<std::string> defaultSearchDirectories();
 }
 
 #endif // CRCOMMON_JSONLOADER_1669972280254_H

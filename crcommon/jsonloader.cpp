@@ -36,17 +36,45 @@ namespace crcommon
         }
     }
 
+    std::unordered_set<std::string> defaultSearchDirectories()
+    {
+        std::unordered_set<std::string> result;
+
+        char* search_path_env = getenv("CURA_ENGINE_SEARCH_PATH");
+        if (search_path_env)
+        {
+#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
+            char delims[] = ":"; // Colon for Unix.
+#else
+            char delims[] = ";"; // Semicolon for Windows.
+#endif
+            char paths[128 * 1024]; // Maximum length of environment variable.
+            strcpy(paths, search_path_env); // Necessary because strtok actually modifies the original string, and we don't want to modify the environment variable itself.
+            char* path = strtok(paths, delims);
+            while (path != nullptr)
+            {
+                result.emplace(path);
+                path = strtok(nullptr, ";:,"); // Continue searching in last call to strtok.
+            }
+        }
+
+        return result;
+    }
+
     class KeyValueContainer
     {
     public:
-        KeyValueContainer() {};
+        KeyValueContainer(KValues& values, std::vector<KValues>& extruders)
+            : m_globalKV(values)
+            , m_extruderKVs(extruders)
+        {
+        };
+
         ~KeyValueContainer() {};
-    public:
-        std::string jsonFileName;
-        KValues m_globalKV;
-        std::vector<KValues> m_extruderKVs;
+    protected:
+        KValues& m_globalKV;
+        std::vector<KValues>& m_extruderKVs;
     private:
-        std::unordered_set<std::string> defaultSearchDirectories();
         /*
          * \brief Load a JSON file and store the settings inside it.
          * \param json_filename The location of the JSON file to load settings from.
@@ -87,23 +115,6 @@ namespace crcommon
     };
     int KeyValueContainer::loadJSON(const std::string& json_filename, KValues& settings)
     {
-        //FILE* file = fopen(json_filename.c_str(), "rb");
-        //if (! file)
-        //{
-        //    LOGE("Couldn't open JSON file: %s", json_filename.c_str());
-        //    return 1;
-        //}
-
-        //rapidjson::Document json_document;
-        //char read_buffer[4096];
-        //rapidjson::FileReadStream reader_stream(file, read_buffer, sizeof(read_buffer));
-        //json_document.ParseStream(reader_stream);
-        //fclose(file);
-        //if (json_document.HasParseError())
-        //{
-        //    LOGE("Error parsing JSON (offset %d): %s", (int)json_document.GetErrorOffset(), GetParseError_En(json_document.GetParseError()));
-        //    return 2;
-        //}
         LOGE("try to open JSON file: %s", json_filename);
 
         std::ifstream ifs(json_filename.c_str());
@@ -113,8 +124,7 @@ namespace crcommon
             return 1;
         }
         rapidjson::IStreamWrapper isw(ifs);
-        rapidjson::Document* json_documentPtr = new rapidjson::Document();
-        rapidjson::Document& json_document = *json_documentPtr;
+        rapidjson::Document json_document;
         json_document.ParseStream(isw);
         if (json_document.HasParseError())
         {
@@ -126,31 +136,6 @@ namespace crcommon
         std::string directory = std::filesystem::path(json_filename).parent_path().string();
         search_directories.emplace(directory);
         return loadJSON(json_document, search_directories, settings);
-    }
-
-    std::unordered_set<std::string> KeyValueContainer::defaultSearchDirectories()
-    {
-        std::unordered_set<std::string> result;
-
-        char* search_path_env = getenv("CURA_ENGINE_SEARCH_PATH");
-        if (search_path_env)
-        {
-#if defined(__linux__) || (defined(__APPLE__) && defined(__MACH__))
-            char delims[] = ":"; // Colon for Unix.
-#else
-            char delims[] = ";"; // Semicolon for Windows.
-#endif
-            char paths[128 * 1024]; // Maximum length of environment variable.
-            strcpy(paths, search_path_env); // Necessary because strtok actually modifies the original string, and we don't want to modify the environment variable itself.
-            char* path = strtok(paths, delims);
-            while (path != nullptr)
-            {
-                result.emplace(path);
-                path = strtok(nullptr, ";:,"); // Continue searching in last call to strtok.
-            }
-        }
-
-        return result;
     }
 
     int KeyValueContainer::loadJSON(const rapidjson::Document& document, const std::unordered_set<std::string>& search_directories, KValues& settings)
@@ -337,10 +322,9 @@ namespace crcommon
             LOGE("Couldn't open JSON file: %", jsonFileName);
             return 1;
         }
-        KeyValueContainer keyvalueLoader;
-        keyvalueLoader.loadFile(jsonFileName);
-        KVs = keyvalueLoader.m_globalKV;
-        extruderKVs = keyvalueLoader.m_extruderKVs;
+
+        KeyValueContainer loader(KVs, extruderKVs);
+        loader.loadFile(jsonFileName);
         return 0;
     }
 }
