@@ -115,12 +115,12 @@ namespace crcommon
     };
     int KeyValueContainer::loadJSON(const std::string& json_filename, KValues& settings)
     {
-        LOGE("try to open JSON file: %s", json_filename);
+        LOGE("try to open JSON file: %s", json_filename.c_str());
 
         std::ifstream ifs(json_filename.c_str());
         if (!ifs.is_open())
         {
-            LOGE("Couldn't open JSON file: %", json_filename);
+            LOGE("Couldn't open JSON file: %", json_filename.c_str());
             return 1;
         }
         rapidjson::IStreamWrapper isw(ifs);
@@ -216,7 +216,7 @@ namespace crcommon
             {
                 if (!setting_object.HasMember("default_value"))
                 {
-                    LOGE("JSON setting %s has no default_value!,but have children", name);
+                    LOGE("JSON setting %s has no default_value!,but have children", name.c_str());
                     goto CHILDRN;
                 }
                 else
@@ -243,12 +243,12 @@ namespace crcommon
                     }
                     else if (default_value.IsArray())
                     {
-                        LOGE(" data type is IsArray,but Unrecognized data type in JSON setting %s", name);
+                        LOGE(" data type is IsArray,but Unrecognized data type in JSON setting %s", name.c_str());
                         goto CHILDRN;;
                     }
                     else
                     {
-                        LOGE("Unrecognized data type in JSON setting %s", name);
+                        LOGE("Unrecognized data type in JSON setting %s", name.c_str());
                         goto CHILDRN;;
                     }
                     _add_item(name, value_string, settings);
@@ -314,12 +314,12 @@ namespace crcommon
 
     int loadJSON(const std::string& jsonFileName, KValues& KVs, std::vector<KValues>& extruderKVs)
     {
-        LOGE("try to open JSON file: %s", jsonFileName);
+        LOGE("try to open JSON file: %s", jsonFileName.c_str());
 
         std::ifstream ifs(jsonFileName.c_str());
         if (!ifs.is_open())
         {
-            LOGE("Couldn't open JSON file: %", jsonFileName);
+            LOGE("Couldn't open JSON file: %", jsonFileName.c_str());
             return 1;
         }
 
