@@ -36,7 +36,7 @@ namespace crcommon
         }
     }
 
-    std::unordered_set<std::string> defaultSearchDirectories()
+    std::unordered_set<std::string> jsonSearchDirectories()
     {
         std::unordered_set<std::string> result;
 
@@ -59,6 +59,21 @@ namespace crcommon
         }
 
         return result;
+    }
+
+    std::string findDefinitionFile(const std::string& definition_id, const std::unordered_set<std::string>& search_directories)
+    {
+        for (const std::string& search_directory : search_directories)
+        {
+            const std::string candidate = search_directory + std::string("/") + definition_id + std::string(".def.json");
+            const std::ifstream ifile(candidate.c_str()); // Check whether the file exists and is readable by opening it.
+            if (ifile)
+            {
+                return candidate;
+            }
+        }
+        LOGE("Couldn't find definition file with ID: %s", definition_id.c_str());
+        return std::string("");
     }
 
     class KeyValueContainer
@@ -101,18 +116,10 @@ namespace crcommon
          * \param settings The settings storage to store the new settings in.
          */
         void loadJSONSettings(const rapidjson::Value& element, KValues& settings);
-
-        /*
-         * \brief Find a definition file in the search directories.
-         * \param definition_id The ID of the definition to look for.
-         * \param search_directories The directories to search in.
-         * \return The first definition file that matches the definition ID.
-         */
-        const std::string findDefinitionFile(const std::string& definition_id, const std::unordered_set<std::string>& search_directories);
-
     public:
         void loadFile(const std::string& filename);
     };
+
     int KeyValueContainer::loadJSON(const std::string& json_filename, KValues& settings)
     {
         LOGE("try to open JSON file: %s", json_filename.c_str());
@@ -132,7 +139,7 @@ namespace crcommon
             return 2;
         }
 
-        std::unordered_set<std::string> search_directories = defaultSearchDirectories(); // For finding the inheriting JSON files.
+        std::unordered_set<std::string> search_directories = jsonSearchDirectories(); // For finding the inheriting JSON files.
         std::string directory = std::filesystem::path(json_filename).parent_path().string();
         search_directories.emplace(directory);
         return loadJSON(json_document, search_directories, settings);
@@ -293,20 +300,6 @@ namespace crcommon
         }
     }
 
-    const std::string KeyValueContainer::findDefinitionFile(const std::string& definition_id, const std::unordered_set<std::string>& search_directories)
-    {
-        for (const std::string& search_directory : search_directories)
-        {
-            const std::string candidate = search_directory + std::string("/") + definition_id + std::string(".def.json");
-            const std::ifstream ifile(candidate.c_str()); // Check whether the file exists and is readable by opening it.
-            if (ifile)
-            {
-                return candidate;
-            }
-        }
-        LOGE("Couldn't find definition file with ID: %s", definition_id.c_str());
-        return std::string("");
-    }
     void KeyValueContainer::loadFile(const std::string& filename)
     {
         loadJSON(filename, m_globalKV);
