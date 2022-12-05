@@ -2,6 +2,9 @@
 #define CRCOMMON_HEADER_INTERFACE
 #include "crcommon/interface.h"
 
+#include "ccglobal/tracer.h"
+#include "ccglobal/log.h"
+
 #include "trimesh2/TriMesh.h"
 #include "trimesh2/XForm.h"
 #include <memory>
