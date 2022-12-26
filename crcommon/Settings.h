@@ -67,7 +67,7 @@ public:
      * \return A string containing all settings and their values.
      */
     const std::string getAllSettingsString() const;
-
+    const std::string getString(const std::string& key) const;
     /*!
      * \brief Indicate whether this settings instance has an entry for the
      * specified setting.

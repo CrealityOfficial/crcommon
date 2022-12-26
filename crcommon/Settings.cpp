@@ -58,6 +58,11 @@ int Settings::get<int>(const std::string& key) const
     return atoi(get<std::string>(key).c_str());
 }
 
+const std::string Settings::getString(const std::string& key) const
+{
+    return get<std::string>(key);
+}
+
 template<>
 bool Settings::get<bool>(const std::string& key) const
 {

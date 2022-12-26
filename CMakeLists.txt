@@ -19,4 +19,5 @@ set(DEFS)
 set(INTERFACES)
 
 __add_common_library(crcommon)
+__set_folder_targets(slice TARGET crcommon)
 								
