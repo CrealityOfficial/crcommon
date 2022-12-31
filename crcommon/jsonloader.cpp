@@ -18,7 +18,7 @@
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/ostreamwrapper.h>
 #include <rapidjson/prettyWriter.h>
-
+#include "boost/filesystem.hpp"
 #include "ccglobal/log.h"
 
 namespace crcommon
@@ -140,7 +140,7 @@ namespace crcommon
         }
 
         std::unordered_set<std::string> search_directories = jsonSearchDirectories(); // For finding the inheriting JSON files.
-        std::string directory = std::filesystem::path(json_filename).parent_path().string();
+        std::string directory = boost::filesystem::path(json_filename).parent_path().string();
         search_directories.emplace(directory);
         return loadJSON(json_document, search_directories, settings);
     }
