@@ -131,7 +131,12 @@ namespace crcommon
 
     std::string loadStr(std::ifstream& in)
     {
-        return std::string();
+        int size = templateLoad<int>(in);
+        std::string str;
+        str.resize(size);
+        in.read(str.data(), size);
+
+        return str;
     }
 
     void saveStr(const std::string& str, std::ofstream& out)
