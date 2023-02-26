@@ -88,7 +88,16 @@ namespace crcommon
 
     void Settings::load(std::ifstream& in)
     {
+        int count = templateLoad<int>(in);
 
+        for (int i = 0; i < count; ++i)
+        {
+            std::string key = loadStr(in);
+            std::string value = loadStr(in);
+
+            LOGI("load [%s] [%s]", key.c_str(), value.c_str());
+            add(key, value);
+        }
     }
 
     void Settings::save(std::ofstream& out)
