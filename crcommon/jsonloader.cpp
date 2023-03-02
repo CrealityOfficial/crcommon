@@ -17,7 +17,7 @@
 #include <rapidjson/writer.h>
 #include <rapidjson/stringbuffer.h>
 #include <rapidjson/ostreamwrapper.h>
-#include <rapidjson/prettyWriter.h>
+#include <rapidjson/prettywriter.h>
 #include "boost/filesystem.hpp"
 #include "ccglobal/log.h"
 
