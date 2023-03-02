@@ -4,7 +4,7 @@
 #include <fstream>      // std::ofstream
 #include <sstream>
 #include <string>
-#include <filesystem>
+//#include <filesystem>
 
 #include <cstring> //For strtok and strcopy.
 #include <errno.h> // error number when trying to read file
