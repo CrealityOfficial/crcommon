@@ -95,7 +95,7 @@ namespace crcommon
             std::string key = loadStr(in);
             std::string value = loadStr(in);
 
-            LOGI("load [%s] [%s]", key.c_str(), value.c_str());
+            //LOGI("load [%s] [%s]", key.c_str(), value.c_str());
             add(key, value);
         }
     }
