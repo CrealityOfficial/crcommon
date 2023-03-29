@@ -7,13 +7,18 @@
 
 #include "trimesh2/TriMesh.h"
 #include "trimesh2/XForm.h"
+#include "trimesh2/TriMesh_algo.h"
+
 #include <memory>
 #include <fstream>
+#include <unordered_map>
 
 typedef std::shared_ptr<trimesh::TriMesh> TriMeshPtr;
 
 #include "crcommon/Settings.h"
 typedef std::shared_ptr<crcommon::Settings> SettingsPtr;
+
+typedef std::unordered_map<std::string, std::string> KValues;
 
 template<class T>
 void templateSave(const T& t, std::ofstream& out)
