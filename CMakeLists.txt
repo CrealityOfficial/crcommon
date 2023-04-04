@@ -17,7 +17,7 @@ set(SRCS crcommon/interface.h
 		 )
 		 
 set(INCS)
-set(DEFS)
+set(DEFS BOOST_ALL_NO_LIB BOOST_ALL_DYN_LINK)
 set(INTERFACES)
 
 __add_common_library(crcommon)
