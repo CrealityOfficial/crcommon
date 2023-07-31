@@ -25,6 +25,22 @@ namespace crcommon
 		std::string default_value;
 		std::string value;
 		std::string enabled;
+
+		ParameterMeta()
+		{
+
+		}
+
+		ParameterMeta(const ParameterMeta& meta)
+		{
+			name = meta.name;
+			label = meta.label;
+			description = meta.description;
+			type = meta.type;
+			default_value = meta.default_value;
+			value = meta.value;
+			enabled = meta.enabled;
+		}
 	};
 
 	typedef std::unordered_map<std::string, ParameterMeta*> MetasMap;

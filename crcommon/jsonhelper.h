@@ -8,7 +8,8 @@ namespace crcommon
 {
 	bool openJson(rapidjson::Document& doc, const std::string& fileName);
 
-	void processSub(rapidjson::Document& doc, MetasMap& metas);
+	void processSub(const rapidjson::Document& doc, MetasMap& metas);
+	void processMeta(const rapidjson::Value& value, ParameterMeta& meta);
 }
 
 #endif // CRCOMMON_PARAMETERGENERATOR_1690769853658_H

@@ -38,7 +38,7 @@ namespace crcommon
                 std::string json = path + "/" + sub;
 
                 rapidjson::Document subDoc;
-                if (!openJson(baseDoc, baseFile))
+                if (!openJson(subDoc, json))
                 {
                     LOGE("ParameterMetas::initializeBase parse sub. [%s] error.", sub.c_str());
                     continue;

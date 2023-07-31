@@ -29,7 +29,7 @@ namespace crcommon
         return true;
 	}
 
-    void processSub(rapidjson::Document& doc, MetasMap& metas)
+    void processSub(const rapidjson::Document& doc, MetasMap& metas)
     {
         for (rapidjson::Value::ConstMemberIterator child = doc.MemberBegin();
             child != doc.MemberEnd(); child++)
@@ -44,8 +44,77 @@ namespace crcommon
                 continue;
             }
 
-            ParameterMeta* meta = new ParameterMeta();
-            metas.insert(MetasMap::value_type(name, meta));
+            ParameterMeta meta;
+            processMeta(childValue, meta);
+
+            metas.insert(MetasMap::value_type(name, new ParameterMeta(meta)));
         }
+    }
+
+    void processMeta(const rapidjson::Value& value, ParameterMeta& meta)
+    {
+        if (!value.IsObject())
+            return;
+
+        if (value.HasMember(META_LABEL))
+            meta.label = (value[META_LABEL].GetString());
+
+        if (value.HasMember(META_DESCRIPTION))
+            meta.description = (value[META_DESCRIPTION].GetString());
+
+        //if (value.HasMember("unit")) itemDef->unit = (value["unit"].GetString());
+        
+        if (value.HasMember(META_TYPE))
+            meta.type = (value[META_TYPE].GetString());
+
+        if (value.HasMember(META_DEFAULT_VALUE))
+            meta.default_value = (value[META_DEFAULT_VALUE].GetString());
+
+        //if (value.HasMember("minimum_value")) itemDef->minimum = (value["minimum_value"].GetString());
+        //if (value.HasMember("maximum_value")) itemDef->maximum = (value["maximum_value"].GetString());
+        //if (value.HasMember("minimum_value_warning")) itemDef->miniwarning = (value["minimum_value_warning"].GetString());
+        //if (value.HasMember("maximum_value_warning")) itemDef->maxwarning = (value["maximum_value_warning"].GetString());
+        
+        if (value.HasMember(META_VALUE))
+            meta.value = (value[META_VALUE].GetString());
+
+        if (value.HasMember(META_ENABLED))
+        {
+            const rapidjson::Value& enabledValue = value[META_ENABLED];
+            if (enabledValue.IsBool())
+            {
+                if (enabledValue.GetBool())
+                {
+                    meta.enabled = "true";
+                }
+                else
+                {
+                    meta.enabled = "false";
+                }
+            }
+            else
+            {
+                meta.enabled = (enabledValue.GetString());
+            }
+        }
+
+        //if (value.HasMember("options"))
+        //{
+        //    const rapidjson::Value& options = value["options"];
+        //    for (rapidjson::Value::ConstMemberIterator child = options.MemberBegin();
+        //        child != options.MemberEnd(); child++)
+        //    {
+        //        QString name = child->name.GetString();
+        //        QString values = child->value.GetString();
+        //
+        //        itemDef->options.insert(name, values);
+        //    }
+        //}
+        //if (itemDef->type == "optional_extruder" || itemDef->type == "extruder")
+        //{
+        //    itemDef->options.insert(QString("-1"), QString("Not overridden"));
+        //    itemDef->options.insert(QString("0"), QString("Extruder 1"));
+        //    itemDef->options.insert(QString("1"), QString("Extruder 2"));
+        //}
     }
 }
