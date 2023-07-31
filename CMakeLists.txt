@@ -4,7 +4,7 @@ __cc_find(rapidjson)
 __cc_find(boost)
 
 set(LIBS rapidjson)
-set(ILIBS trimesh2 boost_filesystem)
+set(ILIBS trimesh2 boost_filesystem boost_nowide)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -14,6 +14,10 @@ set(SRCS crcommon/interface.h
 		 crcommon/Settings.cpp
 		 crcommon/jsonloader.h
 		 crcommon/jsonloader.cpp
+		 crcommon/jsonhelper.h
+		 crcommon/jsonhelper.cpp
+		 crcommon/base/parametermeta.h
+		 crcommon/base/parametermeta.cpp
 		 )
 		 
 set(INCS)
