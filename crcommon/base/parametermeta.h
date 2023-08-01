@@ -56,6 +56,9 @@ namespace crcommon
 		void initializeBaseFile(const std::string& fileName);
 
 		ParameterMetas* createInherits(const std::string& fileName);
+	protected:
+		void clear();
+		ParameterMetas* copy();
 	public:
 		MetasMap mm;
 	};

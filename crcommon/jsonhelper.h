@@ -10,6 +10,8 @@ namespace crcommon
 
 	void processSub(const rapidjson::Document& doc, MetasMap& metas);
 	void processMeta(const rapidjson::Value& value, ParameterMeta& meta);
+
+	void processInherit(const std::string& fileName, const std::string& directory, ParameterMetas& metas);
 }
 
 #endif // CRCOMMON_PARAMETERGENERATOR_1690769853658_H

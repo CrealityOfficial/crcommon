@@ -12,10 +12,7 @@ namespace crcommon
 
 	ParameterMetas::~ParameterMetas()
 	{
-        for (MetasMapIter it = mm.begin();
-            it != mm.end(); ++it)
-            delete it->second;
-        mm.clear();
+        clear();
 	}
 
 	void ParameterMetas::initializeBase(const std::string& path)
@@ -59,6 +56,37 @@ namespace crcommon
 
 	ParameterMetas* ParameterMetas::createInherits(const std::string& fileName)
 	{
-        return nullptr;
+        std::string directory = boost::filesystem::path(fileName).parent_path().string();
+
+        rapidjson::Document machineDoc;
+        if (!openJson(machineDoc, fileName))
+        {
+            LOGE("ParameterMetas::createInherits error. [%s] not valid.", fileName.c_str());
+            return nullptr;
+        }
+
+        ParameterMetas* newMetas = copy();
+        if (machineDoc.HasMember("inherits") && machineDoc["inherits"].IsString())
+        {
+            std::string inherits = machineDoc["inherits"].GetString();
+            processInherit(inherits, fileName, *newMetas);
+        }
 	}
+
+    void ParameterMetas::clear()
+    {
+        for (MetasMapIter it = mm.begin();
+            it != mm.end(); ++it)
+            delete it->second;
+        mm.clear();
+    }
+
+    ParameterMetas* ParameterMetas::copy()
+    {
+        ParameterMetas* nm = new ParameterMetas();
+        for (MetasMapIter it = mm.begin();
+            it != mm.end(); ++it)
+            nm->mm.insert(MetasMap::value_type(it->first, new ParameterMeta(*it->second)));
+        return nm;
+    }
 }

@@ -117,4 +117,9 @@ namespace crcommon
         //    itemDef->options.insert(QString("1"), QString("Extruder 2"));
         //}
     }
+
+    void processInherit(const std::string& fileName, const std::string& directory, ParameterMetas& metas)
+    {
+
+    }
 }
