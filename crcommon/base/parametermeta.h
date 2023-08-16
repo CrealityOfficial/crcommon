@@ -62,6 +62,8 @@ namespace crcommon
 	public:
 		MetasMap mm;
 	};
+
+	CRCOMMON_API void saveKeysJson(const std::vector<std::string>& keys, const std::string& fileName);
 }
 
 #endif // CRCOMMON_PARAMETERMETA_1690769853657_H

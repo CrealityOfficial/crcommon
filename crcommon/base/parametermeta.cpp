@@ -71,6 +71,7 @@ namespace crcommon
             std::string inherits = machineDoc["inherits"].GetString();
             processInherit(inherits, fileName, *newMetas);
         }
+        return newMetas;
 	}
 
     void ParameterMetas::clear()
@@ -88,5 +89,12 @@ namespace crcommon
             it != mm.end(); ++it)
             nm->mm.insert(MetasMap::value_type(it->first, new ParameterMeta(*it->second)));
         return nm;
+    }
+
+    void saveKeysJson(const std::vector<std::string>& keys, const std::string& fileName)
+    {
+        std::string content = createKeysContent(keys);
+
+        saveJson(fileName, content);
     }
 }

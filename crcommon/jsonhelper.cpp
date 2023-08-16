@@ -2,6 +2,9 @@
 #include <fstream>
 #include <rapidjson/istreamwrapper.h>
 #include <rapidjson/error/en.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/writer.h>
 
 #include "ccglobal/log.h"
 
@@ -121,5 +124,38 @@ namespace crcommon
     void processInherit(const std::string& fileName, const std::string& directory, ParameterMetas& metas)
     {
 
+    }
+
+    std::string createKeysContent(const std::vector<std::string>& keys)
+    {
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+
+        writer.StartObject();
+        writer.Key("keys");
+        writer.StartArray();
+
+        for (const std::string& key : keys)
+            writer.String(key.c_str());
+        writer.EndArray();
+        writer.EndObject();
+        return std::string(buffer.GetString());
+    }
+
+    void saveJson(const std::string& fileName, const std::string& content)
+    {
+        rapidjson::Document doc;
+
+        std::string writeStr = content;
+        doc.Parse(writeStr.c_str());
+        FILE* f = fopen(fileName.c_str(), "wb");
+        if (f)
+        {
+            char buffer[65535];
+            rapidjson::FileWriteStream os(f, buffer, sizeof(buffer));
+            rapidjson::PrettyWriter<rapidjson::FileWriteStream> writer(os);
+            doc.Accept(writer);
+        }
+        fclose(f);
     }
 }
