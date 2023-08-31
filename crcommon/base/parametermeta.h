@@ -52,9 +52,10 @@ namespace crcommon
 		ParameterMetas();
 		~ParameterMetas();
 
-		void initializeBase(const std::string& path);
-		void initializeBaseFile(const std::string& fileName);
+		ParameterMeta* find(const std::string& key);
 
+		// used for base
+		void initializeBase(const std::string& path);
 		ParameterMetas* createInherits(const std::string& fileName);
 	protected:
 		void clear();

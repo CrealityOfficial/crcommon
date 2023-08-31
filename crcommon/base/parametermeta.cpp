@@ -15,6 +15,16 @@ namespace crcommon
         clear();
 	}
 
+    ParameterMeta* ParameterMetas::find(const std::string& key)
+    {
+        MetasMapIter iter = mm.find(key);
+        if (iter != mm.end())
+            return iter->second;
+        
+        LOGE("ParameterMetas::find key error [%s].", key.c_str());
+        return nullptr;
+    }
+
 	void ParameterMetas::initializeBase(const std::string& path)
 	{
 		std::string baseFile = path + "/base.json";
@@ -47,11 +57,6 @@ namespace crcommon
         else {
             LOGE("ParameterMetas::initializeBase base.json no subs.");
         }
-	}
-
-	void ParameterMetas::initializeBaseFile(const std::string& fileName)
-	{
-
 	}
 
 	ParameterMetas* ParameterMetas::createInherits(const std::string& fileName)
